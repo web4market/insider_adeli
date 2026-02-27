@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Кабинет Адели',
+      title: 'Кабинет специалиста Адели-Пенза',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -109,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               SizedBox(height: 32),
               Text(
-                'Личный кабинет',
+                'Личный кабинет специалиста',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

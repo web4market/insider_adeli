@@ -25,14 +25,14 @@ class _WebHelpScreenState extends State<WebHelpScreen> {
           },
           onNavigationRequest: (request) {
             // Разрешаем навигацию только внутри нашего сайта
-            if (request.url.contains('cabinet.adelipnz.ru')) {
+            if (request.url.contains('work.adelipnz.ru')) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://cabinet.adelipnz.ru/help'));
+      ..loadRequest(Uri.parse('https://work.adelipnz.ru/help'));
   }
 
   @override

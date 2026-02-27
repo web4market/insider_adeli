@@ -63,8 +63,8 @@ class ScheduleModel {
 
   // Получаем имя пациента
   String get patientName {
-    final parts = title.split('для пациента: ');
-    return parts.length > 1 ? parts[1].trim() : 'Пациент';
+    final parts = title.split('для специалиста: ');
+    return parts.length > 1 ? parts[1].trim() : 'Специалист';
   }
 }
 

@@ -132,14 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 40),
 
                     Text(
-                      'Личный кабинет',
+                      'Личный кабинет специалиста',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Colors.blue.shade800,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'Адели Пенза',
+                      'ЛОЦ Адели-Пенза',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey.shade600,

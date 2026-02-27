@@ -4,7 +4,6 @@ import '../widgets/menu_card.dart';
 import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
-import 'courses_screen.dart';
 import 'help_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
@@ -152,19 +151,6 @@ class MainMenuScreen extends StatelessWidget {
               ),
 
               MenuCard(
-                icon: Icons.school,
-                title: 'Назначенные курсы',
-                description: 'Список ваших курсов и прогресс',
-                color: Colors.green,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => CoursesScreen()),
-                  );
-                },
-              ),
-
-              MenuCard(
                 icon: Icons.help_outline,
                 title: 'Помощь',
                 description: 'Руководство пользователя',
@@ -176,23 +162,8 @@ class MainMenuScreen extends StatelessWidget {
                   );
                 },
               ),
-/*
-              MenuCard(
-                icon: Icons.assignment,
-                title: 'Заполнить анкету',
-                description: 'Анкета пациента',
-                color: Colors.orange,
-                onTap: () {
-                  // TODO: Реализовать экран анкеты
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Раздел "Анкета" в разработке'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
-              ),
-*/
+
+
             ],
           ),
         ),

@@ -46,11 +46,11 @@ class DailySchedule {
 
   // Получаем имя пациента из заголовка
   String get patientName {
-    final parts = title.split('для пациента: ');
+    final parts = title.split('для специалиста: ');
     if (parts.length > 1) {
       return parts[1].trim();
     }
-    return 'Пациент';
+    return 'Специалист';
   }
 
   // Группируем активности по дням
