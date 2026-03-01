@@ -129,24 +129,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                       ),
                     ),
-                    SizedBox(height: 40),
-
+                    SizedBox(height: 20),
                     Text(
-                      'Личный кабинет специалиста',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.blue.shade800,
-                        fontWeight: FontWeight.bold,
+                        'Личный кабинет специалиста \n ЛОЦ Адели-Пенза',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.blue.shade800,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'ЛОЦ Адели-Пенза',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                    SizedBox(height: 40),
-
+                    SizedBox(height: 20),
                     // Поле логина
                     TextFormField(
                       controller: _loginController,

@@ -140,7 +140,7 @@ class MainMenuScreen extends StatelessWidget {
               MenuCard(
                 icon: Icons.calendar_month,
                 title: 'Расписание занятий',
-                description: 'Просмотр расписания',
+                description: 'Расписание на ближайшую дату',
                 color: Colors.blue,
                 onTap: () {
                   Navigator.push(
