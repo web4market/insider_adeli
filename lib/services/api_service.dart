@@ -296,6 +296,8 @@ class ApiService {
     required String newPassword,
   }) async {
     try {
+      print('🔐 changePassword START');
+
       final token = await getToken();
       if (token == null) {
         return {
@@ -305,6 +307,9 @@ class ApiService {
         };
       }
 
+      print('📤 Отправка запроса на /profile/change-password');
+      print('📤 Токен: ${token.substring(0, 20)}...');
+
       final response = await _dio.post(
         '/profile/change-password',
         data: {
@@ -312,18 +317,102 @@ class ApiService {
           'new_password': newPassword,
         },
         options: Options(
-          headers: {'Authorization': 'Bearer $token'},
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
         ),
       );
 
-      return response.data;
+      print('📥 Статус ответа: ${response.statusCode}');
+      print('📥 Данные ответа: ${response.data}');
+
+      if (response.statusCode == 200) {
+        if (response.data == null) {
+          return {
+            'success': false,
+            'message': 'Сервер вернул пустой ответ'
+          };
+        }
+
+        if (response.data is Map) {
+          return response.data as Map<String, dynamic>;
+        } else if (response.data is String) {
+          try {
+            final Map<String, dynamic> parsed = jsonDecode(response.data);
+            return parsed;
+          } catch (e) {
+            return {
+              'success': false,
+              'message': 'Ошибка парсинга ответа: ${response.data}'
+            };
+          }
+        } else {
+          return {
+            'success': false,
+            'message': 'Неверный формат ответа: ${response.data.runtimeType}'
+          };
+        }
+      } else {
+        return {
+          'success': false,
+          'message': 'Ошибка сервера: ${response.statusCode}'
+        };
+      }
+
     } on DioException catch (e) {
+      print('❌ DIO Ошибка:');
+      print('   Тип: ${e.type}');
+      print('   Сообщение: ${e.message}');
+      print('   Статус: ${e.response?.statusCode}');
+      print('   Данные: ${e.response?.data}');
+
+      if (e.response?.statusCode == 401) {
+        return {
+          'success': false,
+          'message': 'Сессия истекла',
+          'needAuth': true
+        };
+      } else if (e.response?.statusCode == 400) {
+        // Пробуем извлечь сообщение из ответа
+        if (e.response?.data != null) {
+          if (e.response!.data is Map) {
+            return {
+              'success': false,
+              'message': e.response!.data['message'] ?? 'Неверный текущий пароль'
+            };
+          }
+        }
+        return {
+          'success': false,
+          'message': 'Неверный текущий пароль'
+        };
+      } else if (e.type == DioExceptionType.connectionError) {
+        return {
+          'success': false,
+          'message': 'Нет подключения к интернету'
+        };
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        return {
+          'success': false,
+          'message': 'Превышено время ожидания'
+        };
+      }
+
       return {
         'success': false,
-        'message': 'Ошибка смены пароля'
+        'message': 'Ошибка соединения: ${e.message}'
+      };
+    } catch (e) {
+      print('❌ Неизвестная ошибка: $e');
+      return {
+        'success': false,
+        'message': 'Ошибка: $e'
       };
     }
   }
+
+
   // ПОЛУЧЕНИЕ РАСПИСАНИЯ - ИСПРАВЛЕННАЯ ВЕРСИЯ
   Future<Map<String, dynamic>> getSchedule() async {
     try {
@@ -459,7 +548,40 @@ class ApiService {
     }
   }
 
+  // ЗАПРОС НОВОГО ПАРОЛЯ
+  Future<Map<String, dynamic>> forgotPassword(String email) async {
+    try {
+      print('📧 Запрос на сброс пароля для email: $email');
 
+      final response = await _dio.post(
+        '/forgot-password',
+        data: {'email': email},
+      );
+
+      print('📥 Ответ: ${response.data}');
+      return response.data;
+
+    } on DioException catch (e) {
+      print('❌ Ошибка: $e');
+      return {
+        'success': false,
+        'message': 'Ошибка соединения с сервером'
+      };
+    }
+  }
+
+  // ПРОВЕРКА EMAIL (для отладки)
+  Future<Map<String, dynamic>> checkEmail(String email) async {
+    try {
+      final response = await _dio.post(
+        '/check-email',
+        data: {'email': email},
+      );
+      return response.data;
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
 
 
 

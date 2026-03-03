@@ -22,6 +22,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  // Состояние видимости паролей
+  bool _showCurrentPassword = false;
+  bool _showNewPassword = false;
+  bool _showConfirmPassword = false;
+
   // Состояние редактирования
   bool _isEditing = false;
   bool _isSaving = false;
@@ -128,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         currentPassword: _currentPasswordController.text,
         newPassword: _newPasswordController.text,
       );
-
+      print('📥 Ответ от API: $response');
       if (response['success'] == true) {
         _showMessage('Пароль успешно изменен');
         _currentPasswordController.clear();
@@ -465,13 +470,28 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
                   TextFormField(
                     controller: _currentPasswordController,
-                    obscureText: true,
+                    obscureText: !_showCurrentPassword,
                     decoration: InputDecoration(
                       labelText: 'Текущий пароль',
                       prefixIcon: Icon(Icons.lock_outline),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _showCurrentPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey.shade600,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showCurrentPassword = !_showCurrentPassword;
+                          });
+                        },
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
                   ),
 
@@ -479,13 +499,27 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
                   TextFormField(
                     controller: _newPasswordController,
-                    obscureText: true,
+                    obscureText: !_showNewPassword,
                     decoration: InputDecoration(
                       labelText: 'Новый пароль',
                       prefixIcon: Icon(Icons.lock_open),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _showNewPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showNewPassword = !_showNewPassword;
+                          });
+                        },
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
                   ),
 
@@ -493,15 +527,32 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
                   TextFormField(
                     controller: _confirmPasswordController,
-                    obscureText: true,
+                    obscureText: !_showConfirmPassword,
                     decoration: InputDecoration(
                       labelText: 'Подтверждение пароля',
                       prefixIcon: Icon(Icons.lock_outline),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _showConfirmPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showConfirmPassword = !_showConfirmPassword;
+                          });
+                        },
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
                   ),
+                // Индикатор сложности пароля
+                  if (_newPasswordController.text.isNotEmpty)
+                    _buildPasswordStrengthIndicator(_newPasswordController.text),
 
                   SizedBox(height: 20),
 
@@ -567,6 +618,64 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPasswordStrengthIndicator(String password) {
+    int strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.contains(RegExp(r'[A-Z]'))) strength++;
+    if (password.contains(RegExp(r'[0-9]'))) strength++;
+    if (password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) strength++;
+
+    Color color;
+    String text;
+
+    switch (strength) {
+      case 0:
+      case 1:
+        color = Colors.red;
+        text = 'Слабый';
+        break;
+      case 2:
+        color = Colors.orange;
+        text = 'Средний';
+        break;
+      case 3:
+        color = Colors.green;
+        text = 'Хороший';
+        break;
+      case 4:
+        color = Colors.blue;
+        text = 'Отличный';
+        break;
+      default:
+        color = Colors.grey;
+        text = 'Не определен';
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: LinearProgressIndicator(
+              value: strength / 4,
+              backgroundColor: Colors.grey.shade300,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
+          ),
+          SizedBox(width: 8),
+          Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
           ),
         ],

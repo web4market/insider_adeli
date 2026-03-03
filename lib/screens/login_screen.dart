@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import 'main_menu_screen.dart';
 import 'help_screen.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -273,6 +274,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+
+// Ссылка на восстановление пароля
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => ForgotPasswordScreen()),
+                        );
+                      },
+                      child: Text(
+                        'Забыли пароль?',
+                        style: TextStyle(color: Colors.blue),
                       ),
                     ),
 
