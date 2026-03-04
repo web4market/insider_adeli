@@ -6,21 +6,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'services/update_service.dart';
 import 'widgets/update_dialog.dart';
 
-
-
-
-void checkAsset() async {
-  try {
-    await rootBundle.load('assets/images/Adeli-logo101.png');
-    print('✅ Логотип найден');
-  } catch (e) {
-    print('❌ Логотип не найден: $e');
-  }
-}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- // Инициализация сервиса обновлений
+  // Инициализация сервиса обновлений
   await UpdateService().init();
 
   runApp(MyApp());
@@ -86,7 +75,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void _showUpdateDialog(VersionInfo versionInfo, {required bool isRequired}) {
     showDialog(
       context: context,
-      barrierDismissible: !isRequired, // Нельзя закрыть при обязательном обновлении
+      barrierDismissible:
+          !isRequired, // Нельзя закрыть при обязательном обновлении
       builder: (context) => UpdateDialog(
         versionInfo: versionInfo,
         isRequired: isRequired,
@@ -104,9 +94,6 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
-
-
-
 
   Future<void> _checkAuth() async {
     // Небольшая задержка для показа сплэша
@@ -156,22 +143,22 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 width: 250,
                 height: 150,
-                  child: Image.asset(
-                    'assets/images/Adeli-logo101.png',
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      print('❌ Ошибка загрузки логотипа: $error');
-                      // Если изображение не загрузилось, показываем иконку
-                      return Container(
-                        color: Colors.blue,
-                        child: Icon(
-                          Icons.diversity_3,
-                          size: 60,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
+                child: Image.asset(
+                  'assets/images/Adeli-logo101.png',
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('❌ Ошибка загрузки логотипа: $error');
+                    // Если изображение не загрузилось, показываем иконку
+                    return Container(
+                      color: Colors.blue,
+                      child: Icon(
+                        Icons.diversity_3,
+                        size: 60,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 32),
               Text(

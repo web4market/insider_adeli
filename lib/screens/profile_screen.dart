@@ -7,7 +7,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   final ApiService _apiService = ApiService();
   late TabController _tabController;
 
@@ -140,7 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         _newPasswordController.clear();
         _confirmPasswordController.clear();
       } else {
-        _showMessage(response['message'] ?? 'Ошибка смены пароля', isError: true);
+        _showMessage(response['message'] ?? 'Ошибка смены пароля',
+            isError: true);
       }
     } catch (e) {
       _showMessage('Ошибка соединения', isError: true);
@@ -191,14 +193,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _error != null
-            ? _buildErrorWidget()
-            : TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildProfileTab(),
-                  _buildSecurityTab(),
-                ],
-            ),
+              ? _buildErrorWidget()
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildProfileTab(),
+                    _buildSecurityTab(),
+                  ],
+                ),
     );
   }
 
@@ -222,7 +224,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   child: Center(
                     child: Text(
                       _user?.name?.substring(0, 1).toUpperCase() ??
-                          _user?.username.substring(0, 1).toUpperCase() ?? '?',
+                          _user?.username.substring(0, 1).toUpperCase() ??
+                          '?',
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -286,9 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       ),
                     ],
                   ),
-
                   Divider(height: 24),
-
                   Text(
                     'Имя',
                     style: TextStyle(
@@ -299,31 +300,30 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   SizedBox(height: 4),
                   _isEditing
                       ? TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      hintText: 'Введите имя',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                    ),
-                  )
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            hintText: 'Введите имя',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
+                        )
                       : Row(
-                    children: [
-                      Icon(Icons.badge_outlined, size: 20, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text(
-                        _user?.name ?? 'Не указано',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-
+                          children: [
+                            Icon(Icons.badge_outlined,
+                                size: 20, color: Colors.green),
+                            SizedBox(width: 8),
+                            Text(
+                              _user?.name ?? 'Не указано',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                   Divider(height: 24),
-
                   Text(
                     'Email',
                     style: TextStyle(
@@ -334,29 +334,30 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   SizedBox(height: 4),
                   _isEditing
                       ? TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      hintText: 'Введите email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                    ),
-                  )
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            hintText: 'Введите email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
+                        )
                       : Row(
-                    children: [
-                      Icon(Icons.email_outlined, size: 20, color: Colors.orange),
-                      SizedBox(width: 8),
-                      Text(
-                        _user?.email ?? 'Не указан',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
+                          children: [
+                            Icon(Icons.email_outlined,
+                                size: 20, color: Colors.orange),
+                            SizedBox(width: 8),
+                            Text(
+                              _user?.email ?? 'Не указан',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -375,12 +376,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     onPressed: _isSaving
                         ? null
                         : () {
-                      setState(() {
-                        _isEditing = false;
-                        _nameController.text = _user?.name ?? '';
-                        _emailController.text = _user?.email ?? '';
-                      });
-                    },
+                            setState(() {
+                              _isEditing = false;
+                              _nameController.text = _user?.name ?? '';
+                              _emailController.text = _user?.email ?? '';
+                            });
+                          },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       side: BorderSide(color: Colors.grey),
@@ -398,13 +399,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     ),
                     child: _isSaving
                         ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
                         : Text('Сохранить'),
                   ),
                 ),
@@ -550,9 +551,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       fillColor: Colors.white,
                     ),
                   ),
-                // Индикатор сложности пароля
+                  // Индикатор сложности пароля
                   if (_newPasswordController.text.isNotEmpty)
-                    _buildPasswordStrengthIndicator(_newPasswordController.text),
+                    _buildPasswordStrengthIndicator(
+                        _newPasswordController.text),
 
                   SizedBox(height: 20),
 
@@ -566,13 +568,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       ),
                       child: _isSaving
                           ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
                           : Text('Изменить пароль'),
                     ),
                   ),
@@ -608,7 +610,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       SizedBox(height: 4),
                       Text(
                         'Используйте сложный пароль для защиты аккаунта. '
-                            'Не сообщайте его никому.',
+                        'Не сообщайте его никому.',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey.shade600,
@@ -709,18 +711,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       ),
     );
   }
-
-  String _getAgeWord(int age) {
-    if (age % 10 == 1 && age % 100 != 11) {
-      return 'год';
-    } else if (age % 10 >= 2 && age % 10 <= 4 && (age % 100 < 10 || age % 100 >= 20)) {
-      return 'года';
-    } else {
-      return 'лет';
-    }
-  }
-
-
 
   @override
   void dispose() {

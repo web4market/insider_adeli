@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import '../services/update_service.dart';
 
 class UpdateDialog extends StatelessWidget {
@@ -15,7 +14,8 @@ class UpdateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => !isRequired, // Запрещаем закрытие при обязательном обновлении
+      onWillPop: () async =>
+          !isRequired, // Запрещаем закрытие при обязательном обновлении
       child: AlertDialog(
         title: Row(
           children: [
@@ -116,23 +116,25 @@ class UpdateDialog extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: versionInfo.releaseNotes.map((note) =>
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('• ', style: TextStyle(fontSize: 16)),
-                                Expanded(
-                                  child: Text(
-                                    note,
-                                    style: TextStyle(fontSize: 14),
+                      children: versionInfo.releaseNotes
+                          .map(
+                            (note) => Padding(
+                              padding: EdgeInsets.only(bottom: 4),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('• ', style: TextStyle(fontSize: 16)),
+                                  Expanded(
+                                    child: Text(
+                                      note,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                      ).toList(),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],
@@ -162,7 +164,8 @@ class UpdateDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildVersionRow(String label, String version, IconData icon, {bool highlight = false}) {
+  Widget _buildVersionRow(String label, String version, IconData icon,
+      {bool highlight = false}) {
     return Row(
       children: [
         Icon(icon, size: 16, color: highlight ? Colors.blue : Colors.grey),

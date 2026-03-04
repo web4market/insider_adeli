@@ -23,18 +23,22 @@ class _HelpScreenState extends State<HelpScreen> {
       if (query.isEmpty) {
         _filteredSections = _sections;
       } else {
-        _filteredSections = _sections.map((section) {
-          final filteredItems = section.items.where((item) =>
-          item.title.toLowerCase().contains(query.toLowerCase()) ||
-              item.content.toLowerCase().contains(query.toLowerCase())
-          ).toList();
+        _filteredSections = _sections
+            .map((section) {
+              final filteredItems = section.items
+                  .where((item) =>
+                      item.title.toLowerCase().contains(query.toLowerCase()) ||
+                      item.content.toLowerCase().contains(query.toLowerCase()))
+                  .toList();
 
-          return HelpSection(
-            title: section.title,
-            icon: section.icon,
-            items: filteredItems,
-          );
-        }).where((section) => section.items.isNotEmpty).toList();
+              return HelpSection(
+                title: section.title,
+                icon: section.icon,
+                items: filteredItems,
+              );
+            })
+            .where((section) => section.items.isNotEmpty)
+            .toList();
       }
     });
   }
@@ -69,26 +73,26 @@ class _HelpScreenState extends State<HelpScreen> {
       ),
       body: _filteredSections.isEmpty
           ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'Ничего не найдено',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
-            ),
-          ],
-        ),
-      )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.search_off, size: 64, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'Ничего не найдено',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ],
+              ),
+            )
           : ListView.builder(
-        padding: EdgeInsets.all(12),
-        itemCount: _filteredSections.length,
-        itemBuilder: (context, index) {
-          final section = _filteredSections[index];
-          return _buildSection(section);
-        },
-      ),
+              padding: EdgeInsets.all(12),
+              itemCount: _filteredSections.length,
+              itemBuilder: (context, index) {
+                final section = _filteredSections[index];
+                return _buildSection(section);
+              },
+            ),
     );
   }
 
@@ -166,8 +170,12 @@ class _HelpScreenState extends State<HelpScreen> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    item.content.substring(0,
-                        item.content.length > 100 ? 100 : item.content.length) + '...',
+                    item.content.substring(
+                            0,
+                            item.content.length > 100
+                                ? 100
+                                : item.content.length) +
+                        '...',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade600,

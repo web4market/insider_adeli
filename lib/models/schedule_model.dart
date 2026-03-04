@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class ScheduleModel {
   final int id;
   final String title;
@@ -188,13 +186,15 @@ class ActivityModel {
       return 'Кабинет ${match.group(1)}';
     }
 
-    final lines = textInCell.split(' ').where((l) => l.trim().isNotEmpty).toList();
+    final lines =
+        textInCell.split(' ').where((l) => l.trim().isNotEmpty).toList();
     return lines.isNotEmpty ? lines[0].trim() : 'Кабинет не указан';
   }
 
   String get specialist {
     // Ищем специалиста (обычно после слова "Кабинет")
-    final lines = textInCell.split(' ').where((l) => l.trim().isNotEmpty).toList();
+    final lines =
+        textInCell.split(' ').where((l) => l.trim().isNotEmpty).toList();
     if (lines.length > 1) {
       // Пропускаем первое слово (Кабинет ХХХ) и берем остальное
       return lines.skip(1).join(' ').trim();
