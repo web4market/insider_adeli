@@ -176,8 +176,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Проверка обновлений...',
                 style: TextStyle(color: Colors.grey.shade600),
               ),
-              SizedBox(height: 16),
-              CircularProgressIndicator(color: Colors.blue),
             ],
           ),
         ),

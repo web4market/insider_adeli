@@ -4,7 +4,7 @@ import 'dart:convert'; // для jsonDecode и jsonEncode
 
 class ApiService {
   // URL PHP бэкенда
-  static const String _baseUrl = 'https://work.adelipnz.ru/api';
+  static const String _baseUrl = 'https://work.adelipnz.ru/api2/api';
 
   final Dio _dio = Dio(BaseOptions(
     baseUrl: _baseUrl,
@@ -36,7 +36,8 @@ class ApiService {
 
 // ===== МЕТОД АВТОРИЗАЦИИ =====
 
-  Future<Map<String, dynamic>> login(String username, String password, {bool remember = false}) async {
+  Future<Map<String, dynamic>> login(String username, String password,
+      {bool remember = false}) async {
     if (username.isEmpty || password.isEmpty) {
       return {
         'success': false,
@@ -90,23 +91,17 @@ class ApiService {
         }
       }
 
-      return {
-        'success': false,
-        'error': 'Ошибка авторизации'
-      };
-
+      return {'success': false, 'error': 'Ошибка авторизации'};
     } on DioException catch (e) {
       print('❌ login ошибка: $e');
-      return {
-        'success': false,
-        'error': _handleDioError(e)
-      };
+      return {'success': false, 'error': _handleDioError(e)};
     }
   }
   // lib/services/api_service.dart - добавьте эти методы
 
   // Сохраняем последний логин
-  static Future<void> saveLastLogin(String username, {bool remember = false}) async {
+  static Future<void> saveLastLogin(String username,
+      {bool remember = false}) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('last_login', username);
     await prefs.setBool('remember_me', remember);
@@ -123,7 +118,6 @@ class ApiService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('remember_me') ?? false;
   }
-
 
   // ПРОВЕРКА ТОКЕНА
   Future<bool> checkToken() async {
@@ -169,9 +163,8 @@ class ApiService {
       print('🔍 getProfile() START');
 
       final token = await getToken();
-      print('📌 Токен: ${token != null
-          ? token.substring(0, 20) + "..."
-          : "NULL"}');
+      print(
+          '📌 Токен: ${token != null ? token.substring(0, 20) + "..." : "NULL"}');
 
       if (token == null) {
         print('❌ Токен отсутствует');
@@ -193,7 +186,7 @@ class ApiService {
         ),
       );
 
-     // Пробуем распарсить
+      // Пробуем распарсить
       if (response.data is Map) {
         print('✅ Данные в формате Map');
         return response.data as Map<String, dynamic>;
@@ -205,17 +198,11 @@ class ApiService {
           return parsed;
         } catch (e) {
           print('❌ Ошибка парсинга JSON: $e');
-          return {
-            'success': false,
-            'message': 'Ошибка формата данных: $e'
-          };
+          return {'success': false, 'message': 'Ошибка формата данных: $e'};
         }
       }
 
-      return {
-        'success': false,
-        'message': 'Неизвестный формат ответа'
-      };
+      return {'success': false, 'message': 'Неизвестный формат ответа'};
     } on DioException catch (e) {
       print('❌ DIO ОШИБКА:');
       print('   Тип: ${e.type}');
@@ -239,13 +226,9 @@ class ApiService {
     } catch (e) {
       print('❌ Неизвестная ошибка: $e');
       print('   Тип ошибки: ${e.runtimeType}');
-      return {
-        'success': false,
-        'message': 'Неизвестная ошибка: $e'
-      };
+      return {'success': false, 'message': 'Неизвестная ошибка: $e'};
     }
   }
-
 
   // ОБНОВЛЕНИЕ ПРОФИЛЯ
   Future<Map<String, dynamic>> updateProfile({
@@ -267,10 +250,7 @@ class ApiService {
       if (email != null) data['email'] = email;
 
       if (data.isEmpty) {
-        return {
-          'success': false,
-          'message': 'Нет данных для обновления'
-        };
+        return {'success': false, 'message': 'Нет данных для обновления'};
       }
 
       final response = await _dio.put(
@@ -283,10 +263,7 @@ class ApiService {
 
       return response.data;
     } on DioException catch (e) {
-      return {
-        'success': false,
-        'message': 'Ошибка обновления профиля'
-      };
+      return {'success': false, 'message': 'Ошибка обновления профиля'};
     }
   }
 
@@ -329,10 +306,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         if (response.data == null) {
-          return {
-            'success': false,
-            'message': 'Сервер вернул пустой ответ'
-          };
+          return {'success': false, 'message': 'Сервер вернул пустой ответ'};
         }
 
         if (response.data is Map) {
@@ -359,7 +333,6 @@ class ApiService {
           'message': 'Ошибка сервера: ${response.statusCode}'
         };
       }
-
     } on DioException catch (e) {
       print('❌ DIO Ошибка:');
       print('   Тип: ${e.type}');
@@ -379,48 +352,36 @@ class ApiService {
           if (e.response!.data is Map) {
             return {
               'success': false,
-              'message': e.response!.data['message'] ?? 'Неверный текущий пароль'
+              'message':
+                  e.response!.data['message'] ?? 'Неверный текущий пароль'
             };
           }
         }
-        return {
-          'success': false,
-          'message': 'Неверный текущий пароль'
-        };
+        return {'success': false, 'message': 'Неверный текущий пароль'};
       } else if (e.type == DioExceptionType.connectionError) {
-        return {
-          'success': false,
-          'message': 'Нет подключения к интернету'
-        };
+        return {'success': false, 'message': 'Нет подключения к интернету'};
       } else if (e.type == DioExceptionType.connectionTimeout) {
-        return {
-          'success': false,
-          'message': 'Превышено время ожидания'
-        };
+        return {'success': false, 'message': 'Превышено время ожидания'};
       }
 
-      return {
-        'success': false,
-        'message': 'Ошибка соединения: ${e.message}'
-      };
+      return {'success': false, 'message': 'Ошибка соединения: ${e.message}'};
     } catch (e) {
       print('❌ Неизвестная ошибка: $e');
-      return {
-        'success': false,
-        'message': 'Ошибка: $e'
-      };
+      return {'success': false, 'message': 'Ошибка: $e'};
     }
   }
 
-
-  // ПОЛУЧЕНИЕ РАСПИСАНИЯ - ИСПРАВЛЕННАЯ ВЕРСИЯ
-  Future<Map<String, dynamic>> getSchedule() async {
+// ПОЛУЧЕНИЕ РАСПИСАНИЯ СПЕЦИАЛИСТА
+  Future<Map<String, dynamic>> getEmployeeSchedule({
+    String? dateFrom,
+    String? dateTo,
+    String period = 'all',
+  }) async {
     try {
-      print('🔍 getSchedule() START');
+      print('🔍 getEmployeeSchedule() START');
 
       final token = await getToken();
       if (token == null) {
-        print('❌ Токен отсутствует');
         return {
           'success': false,
           'message': 'Не авторизован',
@@ -428,73 +389,25 @@ class ApiService {
         };
       }
 
-      print('📤 Запрос к /api/schedule');
-      print('📤 Headers: Authorization: Bearer ${token.substring(0, 20)}...');
+      Map<String, String> queryParams = {
+        'period': period,
+      };
+
+      if (dateFrom != null) queryParams['date_from'] = dateFrom;
+      if (dateTo != null) queryParams['date_to'] = dateTo;
 
       final response = await _dio.get(
-        '/schedule',  // Простой запрос без параметров
+        '/schedule',
+        queryParameters: queryParams,
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-          },
+          headers: {'Authorization': 'Bearer $token'},
         ),
       );
 
-      print('📥 Статус ответа: ${response.statusCode}');
-      print('📥 Тип данных: ${response.data.runtimeType}');
-      print('📥 Данные: ${response.data}');
-
-      if (response.statusCode == 200) {
-        if (response.data is Map) {
-          final data = response.data as Map<String, dynamic>;
-          print('📊 success: ${data['success']}');
-          print('📊 total: ${data['total']}');
-
-          if (data['data'] is List) {
-            print('📊 data длина: ${(data['data'] as List).length}');
-          }
-
-          return data;
-        } else if (response.data is String) {
-          try {
-            final parsed = jsonDecode(response.data);
-            return parsed as Map<String, dynamic>;
-          } catch (e) {
-            print('❌ Ошибка парсинга JSON: $e');
-            return {
-              'success': false,
-              'message': 'Ошибка формата данных'
-            };
-          }
-        }
-      }
-
-      return {
-        'success': false,
-        'message': 'Ошибка загрузки расписания'
-      };
-
+      return response.data;
     } on DioException catch (e) {
-      print('❌ DIO Ошибка: ${e.message}');
-      if (e.response?.statusCode == 401) {
-        await deleteToken();
-        return {
-          'success': false,
-          'message': 'Сессия истекла',
-          'needAuth': true
-        };
-      }
-      return {
-        'success': false,
-        'message': 'Ошибка соединения: ${e.message}'
-      };
-    } catch (e) {
-      print('❌ Неизвестная ошибка: $e');
-      return {
-        'success': false,
-        'message': 'Ошибка: $e'
-      };
+      print('❌ Ошибка загрузки расписания специалиста: $e');
+      return {'success': false, 'message': 'Ошибка загрузки расписания'};
     }
   }
 
@@ -521,7 +434,7 @@ class ApiService {
         return 'Ошибка сертификата безопасности.';
 
       case DioExceptionType.badResponse:
-      // Обработка HTTP ошибок
+        // Обработка HTTP ошибок
         if (e.response?.statusCode == 401) {
           return 'Неверный логин или пароль';
         } else if (e.response?.statusCode == 403) {
@@ -560,13 +473,9 @@ class ApiService {
 
       print('📥 Ответ: ${response.data}');
       return response.data;
-
     } on DioException catch (e) {
       print('❌ Ошибка: $e');
-      return {
-        'success': false,
-        'message': 'Ошибка соединения с сервером'
-      };
+      return {'success': false, 'message': 'Ошибка соединения с сервером'};
     }
   }
 
@@ -582,13 +491,4 @@ class ApiService {
       return {'success': false, 'message': e.toString()};
     }
   }
-
-
-
-
-
-
-
-
-
 }

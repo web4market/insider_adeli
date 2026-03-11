@@ -3,7 +3,7 @@ import '../services/api_service.dart';
 import '../widgets/menu_card.dart';
 import 'login_screen.dart';
 import 'profile_screen.dart';
-import 'schedule_screen.dart';
+import 'employee_schedule_screen.dart';
 import 'help_screen.dart';
 import '../services/update_service.dart';
 import '../widgets/update_dialog.dart';
@@ -47,7 +47,7 @@ class MainMenuScreen extends StatelessWidget {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => LoginScreen()),
-              (route) => false,
+          (route) => false,
         );
       }
     }
@@ -140,14 +140,14 @@ class MainMenuScreen extends StatelessWidget {
               // lib/screens/main_menu_screen.dart - обновите переход на расписание
 
               MenuCard(
-                icon: Icons.calendar_month,
-                title: 'Расписание занятий',
-                description: 'Расписание на ближайшую дату',
-                color: Colors.blue,
+                icon: Icons.assignment_ind,
+                title: 'Моё расписание',
+                description: 'Расписание процедур специалиста',
+                color: Colors.purple,
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => ScheduleScreen()),
+                    MaterialPageRoute(builder: (_) => EmployeeScheduleScreen()),
                   );
                 },
               ),
@@ -201,7 +201,6 @@ class MainMenuScreen extends StatelessWidget {
                   }
                 },
               ),
-
             ],
           ),
         ),
