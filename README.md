@@ -1,17 +1,68 @@
-# insider_adeli
+# Личный кабинет специалиста Адели-Пенза
 
-Личный кабинет специалиста  ЛОЦ Адели-Пенза
+Мобильное приложение для специалистов ЛОЦ "Адели-Пенза". Позволяет просматривать рабочее расписание, отслеживать совместные процедуры с ассистентами и управлять профилем.
 
-## Getting Started
+## 📱 О приложении
 
-This project is a starting point for a Flutter application.
+Приложение предназначено для сотрудников ЛОЦ "Адели-Пенза" (специалистов и ассистентов). Оно предоставляет доступ к актуальному расписанию процедур и информации о совместной работе с коллегами.
 
-A few resources to get you started if this is your first Flutter project:
+### Основные возможности
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- **🔐 Авторизация** — безопасный вход для специалистов
+- **📅 Расписание** — просмотр процедур на сегодня, завтра и на все дни
+- **👥 Совместные процедуры** — информация о работе с ассистентами и коллегами
+- **📊 Статистика** — аналитика по нагрузке и совместной работе
+- **👤 Профиль** — управление личными данными и смена пароля
+- **🔔 Push-уведомления** — получение уведомлений об изменениях в расписании
+- **📖 Встроенное руководство** — помощь в использовании приложения
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠 Технологии
+
+- **Flutter** — кросс-платформенная разработка
+- **Dio** — HTTP-клиент для работы с API
+- **Shared Preferences** — хранение локальных данных
+- **Firebase Cloud Messaging** — push-уведомления
+- **Provider** — управление состоянием
+- **Flutter Local Notifications** — локальные уведомления
+
+## 📦 Установка и запуск
+
+### Системные требования
+
+- **Flutter SDK** — версия 3.0 или выше
+- **Dart SDK** — версия 3.0 или выше
+- **Android Studio** или **VS Code**
+- **Android SDK** (для Android-сборки) или **Xcode** (для iOS)
+
+### Клонирование репозитория
+
+```bash
+git clone https://github.com/web4market/insider_adeli.git
+cd insider_adeli
+```
+
+### Структура проекта
+
+```bash
+lib/
+├── main.dart                 # Точка входа в приложение
+├── screens/                  # Экраны приложения
+│   ├── login_screen.dart     # Авторизация
+│   ├── main_menu_screen.dart # Главное меню
+│   ├── profile_screen.dart   # Профиль специалиста
+│   ├── schedule_screen.dart  # Расписание процедур
+│   ├── help_screen.dart      # Руководство пользователя
+│   └── forgot_password_screen.dart # Восстановление пароля
+├── models/                   # Модели данных
+│   ├── user_model.dart       # Модель специалиста
+│   ├── schedule_model.dart   # Модель расписания (с поддержкой ассистентов)
+│   └── help_section.dart     # Модель разделов помощи
+├── services/                 # Сервисы
+│   ├── api_service.dart      # API-клиент
+│   ├── notification_service.dart # Push-уведомления
+│   └── update_service.dart   # Проверка обновлений
+└── widgets/                  # Переиспользуемые виджеты
+    ├── menu_card.dart        # Карточка меню
+    ├── schedule_card.dart    # Карточка процедуры
+    └── retry_widget.dart     # Виджет повторной попытки
+```
